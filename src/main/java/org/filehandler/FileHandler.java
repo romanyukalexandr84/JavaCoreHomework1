@@ -1,11 +1,9 @@
 package org.filehandler;
 
 import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 
 public class FileHandler {
 
@@ -25,7 +23,6 @@ public class FileHandler {
         return lst;
     }
 
-
     //Метод записи данных в файл
     public static void writeFile(List<String> lst, File file, String note) {
         try (FileWriter fw = new FileWriter(file); BufferedWriter bf = new BufferedWriter(fw)) {
@@ -33,7 +30,10 @@ public class FileHandler {
                 bf.write(item);
                 bf.newLine();
             }
-            bf.write(LocalDate.now() + " -> " + note);
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            String formattedDate = currentDate.format(formatter);
+            bf.write(formattedDate + " -> " + note);
         } catch (FileNotFoundException e) {
             System.out.println("File not found" + file.getName());
         } catch (IOException e) {
